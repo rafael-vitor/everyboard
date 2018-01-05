@@ -1,0 +1,18 @@
+@import "../../scss/_variables.scss";
+
+.TodoList {
+  padding: $spacer;
+  background-color: aliceblue;
+
+  &-input {
+    margin-bottom: $spacer;
+  }
+
+  &-check {
+    text-decoration: line-through;
+  }
+
+  &-show {
+    display: none !important;
+  }
+}
