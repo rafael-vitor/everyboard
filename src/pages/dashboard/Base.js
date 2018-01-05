@@ -15,10 +15,11 @@ class Base extends Component {
         <Sidebar.Pushable as={Segment}>
           <Side visible={visible} />
 
-          <Sidebar.Pusher>
+          <Sidebar.Pusher >
             <Topbar onClick={this.toggleVisibility} />
-            {this.props.children}
-
+            <div className={visible ? "Base-modules" : ""}>
+              {this.props.children}
+            </div>
           </Sidebar.Pusher>
         </Sidebar.Pushable>
       </div>
