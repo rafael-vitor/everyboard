@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Card, Checkbox, Button } from 'semantic-ui-react';
+import { Input, Card, Checkbox } from 'semantic-ui-react';
 import uuidv4 from 'uuid/v4';
 import './style.css';
 
