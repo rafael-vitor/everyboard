@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import TodoList from './modules/todo-list';
+import Dashboard from './pages/dashboard';
 import './style.css';
 import 'semantic-ui-css/semantic.min.css';
 import registerServiceWorker from './registerServiceWorker';
 
 const App = () => (
-  <TodoList />
+  <Dashboard />
 )
 
 ReactDOM.render(<App />, document.getElementById('root'));
