@@ -1,0 +1,39 @@
+@import "../../scss/_variables.scss";
+
+.Base {
+  height: 100vh;
+
+  &-modules {
+    padding: $spacer;
+  }
+}
+
+.Topbar {
+  width: 100%;
+  height: $spacer * 8;
+  display: flex;
+  align-items: center;
+  padding: $spacer * 3;
+  box-shadow: $box-shadow;
+
+  &-icon {
+    cursor: pointer;
+  }
+}
+
+.Side {
+  &-menu {
+    border: none !important;
+    background-color: #5ddcef !important;
+    border-radius: 0 !important;
+    height: 99vh;
+  }
+
+  &-user {
+    text-align: center;
+
+    &-name {
+      margin-top: $spacer;
+    }
+  }
+}
