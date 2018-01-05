@@ -5,8 +5,8 @@ import Base from './Base';
 
 const Dashboard = () => (
   <Base>
-    {/* <Reminder /> */}
-    <TodoList />
+    <Reminder />
+    {/* <TodoList /> */}
   </Base>
 );
 
