@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Card, Checkbox } from 'semantic-ui-react';
+import { Input, Card, Checkbox, Button } from 'semantic-ui-react';
 import uuidv4 from 'uuid/v4';
 import './style.css';
 
@@ -7,6 +7,7 @@ class TodoList extends Component {
   state = {
     input: '',
     todoList: [],
+    show: false,
   }
 
   handleChange = (_, { value }) => this.setState({ input: value });
@@ -38,7 +39,7 @@ class TodoList extends Component {
   }
 
   render() {
-    const { input } = this.state;
+    const { input, show, todoList } = this.state;
     return (
       <div className="TodoList">
         <Input
@@ -52,7 +53,7 @@ class TodoList extends Component {
           onChange={this.handleChange}
           className="TodoList-input"
         />
-        {this.state.todoList
+        {todoList
           .filter(todo => !todo.checked)
           .map(todo => (
             <Card fluid key={todo.id}>
@@ -67,24 +68,37 @@ class TodoList extends Component {
               </Card.Content>
             </Card>
           ))}
-        {this.state.todoList
-          .filter(todo => todo.checked)
-          .map(todo => (
-            <Card
-              fluid
-              key={todo.id}
-            >
-              <Card.Content>
-                <Checkbox
-                  label={todo.input}
-                  checked={todo.checked}
-                  className={todo.checked ? "TodoList-check" : ""}
-                  onClick={this.handleCheck}
-                  id={todo.id}
-                />
-              </Card.Content>
-            </Card>
-          ))}
+        <Button
+          content="SHOW COMPLETED TO-DOS"
+          compact
+          size="tiny"
+          secondary
+          onClick={() => this.setState({ show: !show })}
+        />
+        {
+          show
+            ?
+            todoList
+              .filter(todo => todo.checked)
+              .map(todo => (
+                <Card
+                  fluid
+                  key={todo.id}
+                >
+                  <Card.Content>
+                    <Checkbox
+                      label={todo.input}
+                      checked={todo.checked}
+                      className={todo.checked ? "TodoList-check" : ""}
+                      onClick={this.handleCheck}
+                      id={todo.id}
+                    />
+                  </Card.Content>
+                </Card>
+              ))
+            :
+            <div />
+        }
       </div>
     )
   }
