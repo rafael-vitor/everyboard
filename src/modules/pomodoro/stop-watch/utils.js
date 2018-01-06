@@ -1,17 +1,10 @@
 const fillTextWithFormat = function fillTextWithFormat(
-  hours: number,
   minutes: number,
   seconds: number,
   ): string {
-  let finalHours;
   let finalMinutes;
   let finalSeconds;
 
-  if (hours > 9) {
-    finalHours = hours;
-  } else {
-    finalHours = `0${hours}`;
-  }
   if (minutes > 9) {
     finalMinutes = minutes;
   } else {
@@ -22,9 +15,26 @@ const fillTextWithFormat = function fillTextWithFormat(
   } else {
     finalSeconds = `0${seconds}`;
   }
-  return `${finalHours}:${finalMinutes}:${finalSeconds}`;
+  return `${finalMinutes}:${finalSeconds}`;
+};
+
+const getPercentageTimeLeft = function getPercentageTimeLeft(
+  currentMinutes: number,
+  currentSeconds: number,
+  limit: string,
+  ): number {
+    const currentTotalSeconds = currentMinutes * 60 + currentSeconds;
+
+    const limitTotalSeconds = limit.split(':')[0] * 60 + limit.split(':')[1];
+
+    const r = currentTotalSeconds * 100 / limitTotalSeconds;
+
+    console.log({currentTotalSeconds, limitTotalSeconds, r});
+
+    return currentTotalSeconds * 100 / limitTotalSeconds;
 };
 
 export {
   fillTextWithFormat,
+  getPercentageTimeLeft,
 };

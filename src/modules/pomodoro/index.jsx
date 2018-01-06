@@ -21,7 +21,7 @@ class Pomodoro extends Component {
           seconds={0}
           minutes={0}
           hours={0}
-          limit={"00:00:03"}
+          limit={"00:05"}
           withLoop={true}
           onCallback={() => console.log('Finish')}
         />

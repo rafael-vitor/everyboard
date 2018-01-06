@@ -3,14 +3,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { fillTextWithFormat } from './utils';
+import { fillTextWithFormat, getPercentageTimeLeft } from './utils';
 import { Button } from 'semantic-ui-react';
+import CircularProgressbar from 'react-circular-progressbar';
+import autoBind from 'react-autobind';
+
+import './style.css';
+
 
 type Props = {
   seconds: number,
   minutes: number,
-  hours: number,
-  theme: 'primary' | 'secondary',
   limit?: string,
   withLoop?: boolean,
   defaultStyles: any,
@@ -20,7 +23,6 @@ type Props = {
 
 type State = {
   text: string,
-  stateHours: number,
   stateMinutes: number,
   stateSeconds: number,
   intervalId: number
@@ -28,51 +30,6 @@ type State = {
 
 class StopWatch extends Component {
   static defaultProps = {
-    defaultStyles: {
-      base: {
-        fontSize: '18px',
-        display: 'inline-block',
-        height: '150px',
-        width: '150px',
-      },
-      primary: {
-        containerOutter: {
-          background: '#0f222b',
-          borderRadius: '50%',
-          border: '2px solid #8bc34a',
-          margin: 'auto',
-          top: '0',
-          right: '0',
-          bottom: '0',
-          left: '0',
-          position: 'absolute',
-        },
-        containerInner: {
-          color: '#69ca62',
-          textAlign: 'center',
-          lineHeight: '5',
-        },
-      },
-      secondary: {
-        containerOutter: {
-          background: '#122129',
-          border: '2px solid #8bc34a',
-          margin: 'auto',
-          top: '0',
-          right: '0',
-          bottom: '0',
-          left: '0',
-          position: 'absolute',
-        },
-        containerInner: {
-          color: '#2dba77',
-          textAlign: 'center',
-          lineHeight: '5',
-        },
-      },
-      custom: {},
-    },
-    theme: 'primary',
     withLoop: false,
   };
   props: Props;
@@ -80,18 +37,17 @@ class StopWatch extends Component {
 
   constructor(props: Props): void {
     super(props);
+    autoBind(this);
 
     const {
-       hours,
       minutes,
       seconds,
      } = props;
 
-    const text: string = fillTextWithFormat(hours, minutes, seconds);
+    const text: string = fillTextWithFormat(minutes, seconds);
 
     this.state = {
       text,
-      stateHours: hours,
       stateMinutes: minutes,
       stateSeconds: seconds,
       intervalId: 0,
@@ -100,7 +56,6 @@ class StopWatch extends Component {
 
   componentWillReceiveProps(): void {
     this.setState({
-      stateHours: 0,
       stateMinutes: 0,
       stateSeconds: 0,
       intervalId: 0,
@@ -108,7 +63,7 @@ class StopWatch extends Component {
   }
 
   componentDidMount(): void {
-    this.timer();
+    // this.timer();
   }
 
   componentWillUnmount(): void {
@@ -117,7 +72,6 @@ class StopWatch extends Component {
 
   stopToCount() {
     const {
-       hours,
       minutes,
       seconds,
      } = this.props;
@@ -128,11 +82,10 @@ class StopWatch extends Component {
 
     clearInterval(intervalId);
 
-    const text: string = fillTextWithFormat(hours, minutes, seconds);
+    const text: string = fillTextWithFormat(minutes, seconds);
 
     this.setState({
       text,
-      stateHours: hours,
       stateMinutes: minutes,
       stateSeconds: seconds,
       intervalId: 0,
@@ -152,7 +105,6 @@ class StopWatch extends Component {
      } = this.props;
 
     const {
-       stateHours,
       stateMinutes,
       stateSeconds,
      } = this.state;
@@ -165,15 +117,9 @@ class StopWatch extends Component {
         stateSeconds: 0,
         stateMinutes: stateMinutes + 1,
       });
-      if (stateMinutes >= 60) {
-        this.setState({
-          stateMinutes: 0,
-          stateHours: stateHours + 1,
-        });
-      }
     }
 
-    const text: string = fillTextWithFormat(stateHours, stateMinutes, stateSeconds);
+    const text: string = fillTextWithFormat(stateMinutes, stateSeconds);
 
     this.setState({
       text,
@@ -191,7 +137,6 @@ class StopWatch extends Component {
   }
 
   timer(): void {
-    console.log('timer called');
     // TODO: setInterval return a number.
     const intervalId = setInterval(() => {
       this.counter();
@@ -202,41 +147,49 @@ class StopWatch extends Component {
     });
   }
 
-  render(): ?React$Element<*> {
+  getPercentageTimeLeft() {
     const {
-       defaultStyles,
-      theme,
-      custom,
-     } = this.props;
+      stateMinutes,
+      stateSeconds,
+    } = this.state;
 
+    const {
+      limit
+    } = this.props;
+
+    return getPercentageTimeLeft(stateMinutes, stateSeconds, limit);
+    console.log('getPercentageTimeLeft');
+  }
+
+  render() {
     const {
        text,
      } = this.state;
 
-    const custumStyles = _.defaults(custom, {
-      containerOutter: {},
-      containerInner: {},
-    });
 
     return (
-      <div
-        style={[
-          defaultStyles.base,
-          defaultStyles[theme].containerOutter,
-          custumStyles.containerOutter,
-        ]}
-      >
-        <div
-          style={[
-            defaultStyles[theme].containerInner,
-            custumStyles.containerInner,
-          ]}
-        >
+      <div>
+        <div>
+          <div className="Timer" onClick={() => this.timer()}>
+          <img className="Timer-img" src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/3dDoge.gif" />
+            <div className="Timer-progress">
+              <CircularProgressbar
+                percentage={this.getPercentageTimeLeft()}
+                textForPercentage={() => text}
+              />
+            </div>
+          </div>
+
           <h3>{text}</h3>
           <Button onClick={() => this.reset()}>
+            restart
+          </Button>
+          <Button onClick={() => this.stopToCount()}>
             reset
           </Button>
-
+          <Button onClick={() => this.timer()}>
+            start
+          </Button>
         </div>
       </div>
     );

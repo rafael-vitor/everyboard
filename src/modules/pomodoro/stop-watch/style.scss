@@ -1,0 +1,23 @@
+@import "../../../scss/_variables.scss";
+
+.Timer {
+  height: 200px;
+  width: 200px;
+  cursor: pointer;
+
+  &-progress {
+
+  }
+
+  &-img {
+    height: 60px;
+    position: absolute;
+    left: 60px;
+    top: 20px;
+  }
+
+  .CircularProgressbar-path { stroke: green !important; }
+  .CircularProgressbar-trail { stroke: red !important; }
+  .CircularProgressbar-text { fill: black !important; }
+  // .CircularProgressbar-background { fill: green !important; }
+}
