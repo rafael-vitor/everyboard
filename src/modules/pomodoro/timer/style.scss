@@ -5,19 +5,20 @@
   width: 200px;
   cursor: pointer;
 
-  &-progress {
-
-  }
-
-  &-img {
-    height: 60px;
-    position: absolute;
-    left: 60px;
-    top: 20px;
+  &-button {
+    padding-left: $spacer*7.5;
+    padding-top: $spacer*2;
   }
 
   .CircularProgressbar-path { stroke: green !important; }
   .CircularProgressbar-trail { stroke: red !important; }
   .CircularProgressbar-text { fill: black !important; }
-  // .CircularProgressbar-background { fill: green !important; }
+  .CircularProgressbar-background { fill: red !important; }
+
+  &--resting {
+    .CircularProgressbar-path { stroke: red !important; }
+    .CircularProgressbar-trail { stroke: green !important; }
+  }
+
+
 }

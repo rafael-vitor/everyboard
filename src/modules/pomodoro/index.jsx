@@ -2,9 +2,7 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
 import { Button } from 'semantic-ui-react';
-import Stopwatch from './stop-watch';
-
-// import './style.css';
+import Timer from './timer';
 
 class Pomodoro extends Component {
   constructor(props: Props) {
@@ -17,12 +15,11 @@ class Pomodoro extends Component {
   render() {
     return (
       <div className="Pomodoro">
-        <Stopwatch
+        <Timer
           seconds={0}
           minutes={0}
           hours={0}
-          limit={"00:05"}
-          withLoop={true}
+          withLoop={false}
           onCallback={() => console.log('Finish')}
         />
       </div>

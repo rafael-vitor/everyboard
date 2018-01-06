@@ -10,11 +10,20 @@ import autoBind from 'react-autobind';
 
 import './style.css';
 
-const sessionStateLabels = {
-  waiting: 'Start',
-  working: 'Stop',
-  resting: 'Skip',
-}
+const sessionStateDict = {
+  waiting: {
+    label: 'Start',
+    buttonColor: 'green',
+  },
+  working: {
+    label: 'Stop',
+    buttonColor: 'red',
+  },
+  resting: {
+    label: 'Skip',
+    buttonColor: 'red',
+  }
+};
 
 type Props = {
   seconds: number,
@@ -33,7 +42,7 @@ type State = {
   intervalId: number
 };
 
-class StopWatch extends Component {
+class Timer extends Component {
   static defaultProps = {
     withLoop: false,
   };
@@ -47,6 +56,7 @@ class StopWatch extends Component {
     const {
       minutes,
       seconds,
+      limit,
      } = props;
 
     const text: string = fillTextWithFormat(minutes, seconds);
@@ -57,6 +67,8 @@ class StopWatch extends Component {
       stateSeconds: seconds,
       intervalId: 0,
       sessionState: 'waiting',
+      numberOfSessions: 0,
+      stateLimit: limit || '25:00',
     };
   }
 
@@ -105,12 +117,12 @@ class StopWatch extends Component {
 
   counter(): void {
     const {
-       limit,
       withLoop,
       onCallback,
      } = this.props;
 
     const {
+      stateLimit,
       stateMinutes,
       stateSeconds,
      } = this.state;
@@ -131,7 +143,7 @@ class StopWatch extends Component {
       text,
     });
 
-    if (limit === text) {
+    if (stateLimit === text) {
       this.stopToCount();
       if (withLoop) {
         this.timer();
@@ -139,7 +151,8 @@ class StopWatch extends Component {
       if (typeof onCallback === 'function') {
         this.setState({
           sessionState: 'resting',
-        })
+          stateLimit: '05:00',
+        }, this.timer());
         onCallback();
       }
     }
@@ -158,15 +171,13 @@ class StopWatch extends Component {
 
   getPercentageTimeLeft() {
     const {
+      stateLimit,
       stateMinutes,
       stateSeconds,
     } = this.state;
 
-    const {
-      limit
-    } = this.props;
 
-    return getPercentageTimeLeft(stateMinutes, stateSeconds, limit);
+    return getPercentageTimeLeft(stateMinutes, stateSeconds, stateLimit);
     console.log('getPercentageTimeLeft');
   }
 
@@ -174,15 +185,16 @@ class StopWatch extends Component {
     const { sessionState } = this.state;
     if (this.state.sessionState === 'waiting') {
       this.setState({
-        sessionState: 'working'
+        sessionState: 'working',
       }, this.timer())
     } else if (this.state.sessionState === 'working') {
       this.setState({
-        sessionState: 'waiting'
+        sessionState: 'waiting',
       }, this.stopToCount())
     } else if (this.state.sessionState === 'resting') {
       this.setState({
-        sessionState: 'waiting'
+        sessionState: 'waiting',
+        stateLimit: '25:00',
       }, this.stopToCount())
     }
   }
@@ -196,20 +208,26 @@ class StopWatch extends Component {
       <div>
         <div>
           <div className="Timer" onClick={() => this.timer()}>
-            <div className="Timer-progress">
+            <div className={sessionState === 'resting' ? 'Timer--resting' : ''}>
               <CircularProgressbar
                 percentage={this.getPercentageTimeLeft()}
                 textForPercentage={() => text}
               />
             </div>
           </div>
-          <Button onClick={() => this.click()}>
-            {sessionStateLabels[sessionState]}
-          </Button>
+          <div className="Timer-button">
+            <Button
+              onClick={() => this.click()}
+              color={sessionStateDict[sessionState].buttonColor}
+              basic={sessionState === 'resting'}
+            >
+              {sessionStateDict[sessionState].label}
+            </Button>
+          </div>
         </div>
       </div>
     );
   }
 }
 
-export default StopWatch;
+export default Timer;
