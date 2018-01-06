@@ -10,6 +10,11 @@ import autoBind from 'react-autobind';
 
 import './style.css';
 
+const sessionStateLabels = {
+  waiting: 'Start',
+  working: 'Stop',
+  resting: 'Skip',
+}
 
 type Props = {
   seconds: number,
@@ -51,6 +56,7 @@ class StopWatch extends Component {
       stateMinutes: minutes,
       stateSeconds: seconds,
       intervalId: 0,
+      sessionState: 'waiting',
     };
   }
 
@@ -131,6 +137,9 @@ class StopWatch extends Component {
         this.timer();
       }
       if (typeof onCallback === 'function') {
+        this.setState({
+          sessionState: 'resting',
+        })
         onCallback();
       }
     }
@@ -161,17 +170,32 @@ class StopWatch extends Component {
     console.log('getPercentageTimeLeft');
   }
 
+  click() {
+    const { sessionState } = this.state;
+    if (this.state.sessionState === 'waiting') {
+      this.setState({
+        sessionState: 'working'
+      }, this.timer())
+    } else if (this.state.sessionState === 'working') {
+      this.setState({
+        sessionState: 'waiting'
+      }, this.stopToCount())
+    } else if (this.state.sessionState === 'resting') {
+      this.setState({
+        sessionState: 'waiting'
+      }, this.stopToCount())
+    }
+  }
+
   render() {
     const {
-       text,
+       text, sessionState,
      } = this.state;
-
 
     return (
       <div>
         <div>
           <div className="Timer" onClick={() => this.timer()}>
-          <img className="Timer-img" src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/3dDoge.gif" />
             <div className="Timer-progress">
               <CircularProgressbar
                 percentage={this.getPercentageTimeLeft()}
@@ -179,16 +203,8 @@ class StopWatch extends Component {
               />
             </div>
           </div>
-
-          <h3>{text}</h3>
-          <Button onClick={() => this.reset()}>
-            restart
-          </Button>
-          <Button onClick={() => this.stopToCount()}>
-            reset
-          </Button>
-          <Button onClick={() => this.timer()}>
-            start
+          <Button onClick={() => this.click()}>
+            {sessionStateLabels[sessionState]}
           </Button>
         </div>
       </div>
