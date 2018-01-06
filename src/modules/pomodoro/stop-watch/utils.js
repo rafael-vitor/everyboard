@@ -25,11 +25,8 @@ const getPercentageTimeLeft = function getPercentageTimeLeft(
   ): number {
     const currentTotalSeconds = currentMinutes * 60 + currentSeconds;
 
-    const limitTotalSeconds = limit.split(':')[0] * 60 + limit.split(':')[1];
 
-    const r = currentTotalSeconds * 100 / limitTotalSeconds;
-
-    console.log({currentTotalSeconds, limitTotalSeconds, r});
+    const limitTotalSeconds = parseInt(limit.split(':')[0] * 60) + parseInt(limit.split(':')[1]);
 
     return currentTotalSeconds * 100 / limitTotalSeconds;
 };
