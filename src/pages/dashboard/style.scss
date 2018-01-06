@@ -1,0 +1,44 @@
+@import "../../scss/_variables.scss";
+
+.Base {
+  height: 100vh;
+
+  &-modules {
+    height: calc(99vh - 64px);
+    overflow: auto;
+
+    &-active {
+      width: calc(100% - 260px);
+    }
+  }
+}
+
+.Topbar {
+  width: 100%;
+  height: $spacer * 8;
+  display: flex;
+  align-items: center;
+  padding-left: $spacer * 3;
+  box-shadow: $box-shadow;
+
+  &-icon {
+    cursor: pointer;
+  }
+}
+
+.Side {
+  &-menu {
+    border: none !important;
+    background-color: #5ddcef !important;
+    border-radius: 0 !important;
+    height: 99vh;
+  }
+
+  &-user {
+    text-align: center;
+
+    &-name {
+      margin-top: $spacer;
+    }
+  }
+}
