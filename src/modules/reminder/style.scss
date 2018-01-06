@@ -1,0 +1,19 @@
+@import "../../scss/_variables.scss";
+
+.Reminder {
+  padding: $spacer * 4;
+
+  &-card {
+    display: flex;
+
+    &-value {
+      width: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    &-actions {
+      margin-right: ($spacer * 2) !important;
+    }
+  }
+}
