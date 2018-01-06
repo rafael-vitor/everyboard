@@ -4,7 +4,12 @@
   height: 100vh;
 
   &-modules {
-    width: calc(100% - 260px);
+    height: calc(99vh - 64px);
+    overflow: auto;
+
+    &-active {
+      width: calc(100% - 260px);
+    }
   }
 }
 

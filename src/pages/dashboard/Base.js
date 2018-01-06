@@ -17,7 +17,7 @@ class Base extends Component {
 
           <Sidebar.Pusher >
             <Topbar onClick={this.toggleVisibility} />
-            <div className={visible ? "Base-modules" : ""}>
+            <div className={visible ? "Base-modules Base-modules-active" : "Base-modules"}>
               {this.props.children}
             </div>
           </Sidebar.Pusher>
