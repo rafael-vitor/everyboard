@@ -1,7 +1,4 @@
-const fillTextWithFormat = function fillTextWithFormat(
-  minutes: number,
-  seconds: number,
-  ): string {
+const fillTextWithFormat = (minutes: number, seconds: number) => {
   let finalMinutes;
   let finalSeconds;
 
@@ -18,17 +15,11 @@ const fillTextWithFormat = function fillTextWithFormat(
   return `${finalMinutes}:${finalSeconds}`;
 };
 
-const getPercentageTimeLeft = function getPercentageTimeLeft(
-  currentMinutes: number,
-  currentSeconds: number,
-  limit: string,
-  ): number {
-    const currentTotalSeconds = currentMinutes * 60 + currentSeconds;
+const getPercentageTimeLeft = (currentMinutes: number, currentSeconds: number, limit: string) => {
+  const currentTotalSeconds = currentMinutes * 60 + currentSeconds;
+  const limitTotalSeconds = parseInt(limit.split(':')[0] * 60) + parseInt(limit.split(':')[1]);
 
-
-    const limitTotalSeconds = parseInt(limit.split(':')[0] * 60) + parseInt(limit.split(':')[1]);
-
-    return currentTotalSeconds * 100 / limitTotalSeconds;
+  return currentTotalSeconds * 100 / limitTotalSeconds;
 };
 
 export {
